@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import NotFound from '../views/NotFound.vue'
 import EventList from '../views/EventList.vue'
 import EventLayout from '../views/event/Layout.vue'
 import EventDetails from '../views/event/Details.vue'
@@ -14,7 +15,7 @@ const routes = [
     props: route => ({ page: parseInt(route.query.page) || 1 })
   },
   {
-    path: '/event/:id',
+    path: '/events/:id',
     name: 'EventLayout',
     props: true,
     component: EventLayout,
@@ -37,9 +38,29 @@ const routes = [
     ]
   },
   {
-    path: '/about',
+    path: '/event/:id',
+    redirect: () => {
+      return { name: 'EventLayout' }
+    },
+    children: [
+      { path: '', redirect: () => ({ name: 'EventDetails' })},
+      { path: 'register', redirect: () => ({ name: 'EventRegister' })},
+      { path: 'edit', redirect: () => ({ name: 'EventEdit' })},
+    ]
+  },
+  {
+    path: '/about-us',
     name: 'About',
-    component: About
+    component: About,
+  },
+  {
+    path: '/about',
+    redirect: { name: 'About'}
+  },
+  {
+    path: '/:catchAll(.*)',
+    name: 'NotFound',
+    component: NotFound
   }
 ]
 
